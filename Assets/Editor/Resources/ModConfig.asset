@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: morseButtons
+  title: Morse Buttons
+  description: "Oh, yes... More buttons and blinking lights... How original...\n\r\nModule
+    by TheThirdMan\r\nmoduleID: morseButtons\n\r\nGitHub Repository: https://github.com/luisdiogo98/ktane-morseButtons\n\r\nAny
+    problems/suggestions, feel free to contact me on the KTaNE Discord @TheThirdMan.
+    Join the KTaNE Discord here: https://discord.gg/Fv7YEDj"
+  version: 1.0
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: 5e991c422eb5e424ab60b6f673850cd3, type: 3}
