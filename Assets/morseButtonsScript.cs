@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -369,4 +369,52 @@ public class morseButtonsScript : MonoBehaviour
 
 		return "";
 	}
+	
+	//twitch plays
+    #pragma warning disable 414
+    private readonly string TwitchHelpMessage = @"!{0} <button> [Presses the specified button] | !{0} <button>,<button> [Presses the specified buttons] | Valid buttons are: TL, TM, TR, BL, BM, and BR";
+    #pragma warning restore 414
+
+    IEnumerator ProcessTwitchCommand(string command)
+    {
+        string[] parameters = command.Split(' ',',');
+        foreach (string param in parameters)
+        {
+            yield return null;
+            if (param.EqualsIgnoreCase("TL"))
+            {
+                buttons[0].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (param.EqualsIgnoreCase("TM"))
+            {
+                buttons[1].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (param.EqualsIgnoreCase("TR"))
+            {
+                buttons[2].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (param.EqualsIgnoreCase("BL"))
+            {
+                buttons[3].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (param.EqualsIgnoreCase("BM"))
+            {
+                buttons[4].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else if (param.EqualsIgnoreCase("BR"))
+            {
+                buttons[5].OnInteract();
+                yield return new WaitForSeconds(0.1f);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 }
