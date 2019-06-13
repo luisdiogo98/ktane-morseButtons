@@ -378,43 +378,40 @@ public class morseButtonsScript : MonoBehaviour
     IEnumerator ProcessTwitchCommand(string command)
     {
         string[] parameters = command.Split(' ',',');
+        var buttonsToPress = new List<KMSelectable>();
         foreach (string param in parameters)
         {
-            yield return null;
             if (param.EqualsIgnoreCase("TL"))
             {
-                buttons[0].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[0]);
             }
             else if (param.EqualsIgnoreCase("TM"))
             {
-                buttons[1].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[1]);
             }
             else if (param.EqualsIgnoreCase("TR"))
             {
-                buttons[2].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[2]);
             }
             else if (param.EqualsIgnoreCase("BL"))
             {
-                buttons[3].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[3]);
             }
             else if (param.EqualsIgnoreCase("BM"))
             {
-                buttons[4].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[4]);
             }
             else if (param.EqualsIgnoreCase("BR"))
             {
-                buttons[5].OnInteract();
-                yield return new WaitForSeconds(0.1f);
+                buttonsToPress.Add(buttons[5]);
             }
             else
             {
-                break;
+                yield break;
             }
         }
+
+        yield return null;
+        yield return buttonsToPress;
     }
 }
