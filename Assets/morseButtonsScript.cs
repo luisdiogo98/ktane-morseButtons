@@ -377,10 +377,14 @@ public class morseButtonsScript : MonoBehaviour
 
     IEnumerator ProcessTwitchCommand(string command)
     {
-        string[] parameters = command.Split(' ',',');
+        string[] parameters = command.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
         var buttonsToPress = new List<KMSelectable>();
         foreach (string param in parameters)
         {
+            if (param.EqualsIgnoreCase("press"))
+            {
+                // allow that but don't do anything
+            }
             if (param.EqualsIgnoreCase("TL"))
             {
                 buttonsToPress.Add(buttons[0]);
