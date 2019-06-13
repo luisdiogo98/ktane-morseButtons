@@ -23,6 +23,7 @@ public class morseButtonsScript : MonoBehaviour
 	int[] letters;
 	int[] values;
 	HashSet<int> presses = new HashSet<int>();
+	HashSet<int> pressed = new HashSet<int>();
 
 	static int moduleIdCounter = 1;
     int moduleId;
@@ -56,12 +57,17 @@ public class morseButtonsScript : MonoBehaviour
 	{
 		GetComponent<KMAudio>().PlayGameSoundAtTransform(KMSoundOverride.SoundEffect.ButtonPress, transform);
 		buttons[button].AddInteractionPunch(.5f);
+		
 		if(moduleSolved)
 			return;
 
+		if(pressed.Contains(button))
+			return;
+			
 		if(presses.Contains(button))
 		{
 			presses.Remove(button);
+			pressed.Add(button);
 			if(presses.Count() == 0)
 			{
 				Debug.LogFormat("[Morse Buttons #{0}] Correctly pressed button {1}. Module solved!", moduleId, button + 1);
