@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using KModkit;
+using rnd = UnityEngine.Random;
 
 public class morseButtonsScript : MonoBehaviour 
 {
@@ -12,8 +13,6 @@ public class morseButtonsScript : MonoBehaviour
 
 	public KMBombInfo bomb;
 	public KMAudio Audio;
-
-	static System.Random rnd = new System.Random();
 
 	public KMSelectable[] buttons;
 	public GameObject[] lights;
@@ -103,12 +102,12 @@ public class morseButtonsScript : MonoBehaviour
 
 		for(int i = 0; i < colors.Count(); i++)
 		{
-			colors[i] = rnd.Next() % 6;
+			colors[i] = rnd.Range(0, 6);
 		}
 
 		for(int i = 0; i < letters.Count(); i++)
 		{
-			letters[i] = rnd.Next() % alphabet.Length;
+			letters[i] = rnd.Range(0, alphabet.Length);
 		}
 
 		Debug.LogFormat("[Morse Buttons #{0}]\n" + 
