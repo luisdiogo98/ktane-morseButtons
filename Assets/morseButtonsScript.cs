@@ -110,14 +110,12 @@ public class morseButtonsScript : MonoBehaviour
 			letters[i] = rnd.Range(0, alphabet.Length);
 		}
 
-		Debug.LogFormat("[Morse Buttons #{0}]\n" + 
-						"First button: {1} {2}\n" +
-						"Second button: {3} {4}\n" +
-						"Third button: {5} {6}\n" +
-						"Fourth button: {7} {8}\n" +
-						"Fifth button: {9} {10}\n" +
-						"Sixth button: {11} {12}\n",
-						moduleId, GetColorName(colors[0]), alphabet[letters[0]], GetColorName(colors[1]), alphabet[letters[1]], GetColorName(colors[2]), alphabet[letters[2]], GetColorName(colors[3]), alphabet[letters[3]], GetColorName(colors[4]), alphabet[letters[4]], GetColorName(colors[5]), alphabet[letters[5]]);
+		Debug.LogFormat("[Morse Buttons #{0}] First button: {1} {2}", moduleId, GetColorName(colors[0]), alphabet[letters[0]]);
+		Debug.LogFormat("[Morse Buttons #{0}] Second button: {1} {2}", moduleId, GetColorName(colors[1]), alphabet[letters[1]]);
+		Debug.LogFormat("[Morse Buttons #{0}] Third button: {1} {2}", moduleId, GetColorName(colors[2]), alphabet[letters[2]]);
+		Debug.LogFormat("[Morse Buttons #{0}] Fourth button: {1} {2}", moduleId, GetColorName(colors[3]), alphabet[letters[3]]);
+		Debug.LogFormat("[Morse Buttons #{0}] Fifth button: {1} {2}", moduleId, GetColorName(colors[4]), alphabet[letters[4]]);
+		Debug.LogFormat("[Morse Buttons #{0}] Sixth button: {1} {2}", moduleId, GetColorName(colors[5]), alphabet[letters[5]]);
 	}
 
 	void CalcButtonValues()
@@ -136,14 +134,12 @@ public class morseButtonsScript : MonoBehaviour
 				values[i] += 30;	
 		}
 
-		Debug.LogFormat("[Morse Buttons #{0}]\n" + 
-						"First button value: {1}\n" +
-						"Second button value: {2}\n" +
-						"Third button value: {3}\n" +
-						"Fourth button value: {4}\n" +
-						"Fifth button value: {5}\n" +
-						"Sixth button value: {6}\n",
-						moduleId, values[0], values[1], values[2], values[3], values[4], values[5]);
+		Debug.LogFormat("[Morse Buttons #{0}] First button value: {1}", moduleId, values[0]);
+		Debug.LogFormat("[Morse Buttons #{0}] Second button value: {1}", moduleId, values[1]);
+		Debug.LogFormat("[Morse Buttons #{0}] Third button value: {1}", moduleId, values[2]);
+		Debug.LogFormat("[Morse Buttons #{0}] Fourth button value: {1}", moduleId, values[3]);
+		Debug.LogFormat("[Morse Buttons #{0}] Fifth button value: {1}", moduleId, values[4]);
+		Debug.LogFormat("[Morse Buttons #{0}] Sixth button value: {1}", moduleId, values[5]);
 	}
 
 	int GetCharValue(char c)
