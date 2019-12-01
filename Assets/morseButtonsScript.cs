@@ -174,7 +174,7 @@ public class morseButtonsScript : MonoBehaviour
 		switch(rule)
 		{
 			case 1:
-				return letters[button] == 13 || letters[button] == 15 || letters[button] == 18 || letters[button] == 19 || letters[button] == 5;
+				return letters[button] == 12 || letters[button] == 14 || letters[button] == 17 || letters[button] == 18 || letters[button] == 4;
 			case 2:
 				return CheckRepeatedColors()[colors[button]] > 1;
 			case 3:
