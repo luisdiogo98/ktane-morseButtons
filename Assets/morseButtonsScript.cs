@@ -169,6 +169,21 @@ public class morseButtonsScript : MonoBehaviour
 		}
 	}
 
+	bool hasMoreofAVersusB(string input, char compareA, char compareB)
+	{
+		int countA = 0;
+		int countB = 0;
+
+		foreach (char letter in input)
+		{
+			if (letter == compareA)
+				countA++;
+			else if (letter == compareB)
+				countB++;
+		}
+		return countA > countB;
+	}
+
 	bool CheckRule(int rule, int button)
 	{
 		switch(rule)
@@ -206,7 +221,7 @@ public class morseButtonsScript : MonoBehaviour
 			case 12:
 				return bomb.IsPortPresent(Port.PS2);
 			case 13:
-				return letters[button] == 6 || letters[button] == 9 || letters[button] == 10 || letters[button] == 12 || letters[button] == 14 || letters[button] == 16 || letters[button] == 23 || letters[button] == 25 || letters[button] == 26 || letters[button] == 27 || letters[button] == 28 || letters[button] == 34 || letters[button] == 35;
+				return hasMoreofAVersusB(morseTable[letters[button]], '-', '.');
 			case 14:
 				return button >= 3;
 			case 15:
@@ -232,7 +247,7 @@ public class morseButtonsScript : MonoBehaviour
 			case 25:
 				return bomb.IsDuplicatePortPresent();
 			case 26:
-				return letters[button] == 1 || letters[button] == 3 || letters[button] == 5 || letters[button] == 7 || letters[button] == 8 || letters[button] == 11 || letters[button] == 17 || letters[button] == 18 || letters[button] == 20 || letters[button] == 21 || letters[button] == 28 || letters[button] == 29 || letters[button] == 30 || letters[button] == 31 || letters[button] == 32;
+				return hasMoreofAVersusB(morseTable[letters[button]], '.', '-');
 			case 27:
 				return button <= 2;
 			case 28:
