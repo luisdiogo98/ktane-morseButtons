@@ -8,8 +8,8 @@ using rnd = UnityEngine.Random;
 
 public class morseButtonsScript : MonoBehaviour 
 {
-	readonly String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	readonly String[] morseTable = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----."};
+	readonly string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	readonly string[] morseTable = { ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----."};
 
 	public KMBombInfo bomb;
 	public KMAudio Audio;
@@ -17,26 +17,38 @@ public class morseButtonsScript : MonoBehaviour
 	public KMSelectable[] buttons;
 	public GameObject[] lights;
 	public Material[] mats;
+	public KMColorblindMode colorblindMode;
+	public TextMesh[] colorBlindTexts;
 
 	int[] colors;
 	int[] letters;
 	int[] values;
+
+	readonly string[] positionLists = new string[] { "Top Left", "Top Middle", "Top Right", "Bottom Left", "Bottom Middle", "Bottom Right" };
+
 	HashSet<int> presses = new HashSet<int>();
 	HashSet<int> pressed = new HashSet<int>();
 
 	static int moduleIdCounter = 1;
     int moduleId;
+
     private bool moduleSolved;
+	private bool colorBlindDetected;
 
 	void Awake()
 	{
 		moduleId = moduleIdCounter++;
-		buttons[0].OnInteract += delegate () { HandlePress(0); return false; };
-		buttons[1].OnInteract += delegate () { HandlePress(1); return false; };
-		buttons[2].OnInteract += delegate () { HandlePress(2); return false; };
-		buttons[3].OnInteract += delegate () { HandlePress(3); return false; };
-		buttons[4].OnInteract += delegate () { HandlePress(4); return false; };
-		buttons[5].OnInteract += delegate () { HandlePress(5); return false; };
+		for (int x = 0; x < buttons.Length; x++)
+		{
+			int y = x;
+			buttons[x].OnInteract += delegate () { HandlePress(y); return false; };
+		}
+		try {
+			colorBlindDetected = colorblindMode.ColorblindModeActive;
+		}
+		catch {
+			colorBlindDetected = false;
+		}
 	}
 
 	void Start () 
@@ -49,7 +61,10 @@ public class morseButtonsScript : MonoBehaviour
 	
 	void Update () 
 	{
-		
+		for (int x = 0; x < colorBlindTexts.Length; x++)
+		{
+			colorBlindTexts[x].text = colorBlindDetected && !moduleSolved ? GetColorName(colors[x])[0].ToString() : "";
+		}
 	}
 
 	void HandlePress(int button)
@@ -69,7 +84,7 @@ public class morseButtonsScript : MonoBehaviour
 			pressed.Add(button);
 			if(presses.Count() == 0)
 			{
-				Debug.LogFormat("[Morse Buttons #{0}] Correctly pressed button {1}. Module solved!", moduleId, button + 1);
+				Debug.LogFormat("[Morse Buttons #{0}] Correctly pressed {1} button. Module solved!", moduleId, positionLists[button]);
 				moduleSolved = true;
 				StopAllCoroutines();
 				TurnOffLights();
@@ -77,13 +92,13 @@ public class morseButtonsScript : MonoBehaviour
 			}
 			else
 			{
-				Debug.LogFormat("[Morse Buttons #{0}] Correctly pressed button {1}. The buttons that still need to be pressed are [ {2}]", moduleId, button + 1, GetButtonPresses());
+				Debug.LogFormat("[Morse Buttons #{0}] Correctly pressed {1} button. The buttons that still need to be pressed are [ {2}]", moduleId, positionLists[button], GetButtonPresses());
 			}
 		}
 		else
 		{
 			GetComponent<KMBombModule>().HandleStrike();
-			Debug.LogFormat("[Morse Buttons #{0}] Strike! Incorrectly pressed button {1}. The buttons that still need to be pressed are [ {2}]", moduleId, button + 1, GetButtonPresses());
+			Debug.LogFormat("[Morse Buttons #{0}] Strike! Incorrectly pressed {1} button. The buttons that still need to be pressed are [ {2}]", moduleId, positionLists[button], GetButtonPresses());
 		}
 	}
 
@@ -109,19 +124,14 @@ public class morseButtonsScript : MonoBehaviour
 		{
 			letters[i] = rnd.Range(0, alphabet.Length);
 		}
-
-		Debug.LogFormat("[Morse Buttons #{0}] First button: {1} {2}", moduleId, GetColorName(colors[0]), alphabet[letters[0]]);
-		Debug.LogFormat("[Morse Buttons #{0}] Second button: {1} {2}", moduleId, GetColorName(colors[1]), alphabet[letters[1]]);
-		Debug.LogFormat("[Morse Buttons #{0}] Third button: {1} {2}", moduleId, GetColorName(colors[2]), alphabet[letters[2]]);
-		Debug.LogFormat("[Morse Buttons #{0}] Fourth button: {1} {2}", moduleId, GetColorName(colors[3]), alphabet[letters[3]]);
-		Debug.LogFormat("[Morse Buttons #{0}] Fifth button: {1} {2}", moduleId, GetColorName(colors[4]), alphabet[letters[4]]);
-		Debug.LogFormat("[Morse Buttons #{0}] Sixth button: {1} {2}", moduleId, GetColorName(colors[5]), alphabet[letters[5]]);
+		for (int x = 0; x < 6; x++)
+			Debug.LogFormat("[Morse Buttons #{0}] {3} button is flashing: {1} {2}", moduleId, GetColorName(colors[x]), alphabet[letters[x]], positionLists[x]);
 	}
 
 	void CalcButtonValues()
 	{
 		values = new int[6];
-		String sn = bomb.GetSerialNumber();
+		string sn = bomb.GetSerialNumber();
 
 		for(int i = 0; i < values.Count(); i++)
 		{
@@ -133,13 +143,8 @@ public class morseButtonsScript : MonoBehaviour
 			while(values[i] < 1)
 				values[i] += 30;	
 		}
-
-		Debug.LogFormat("[Morse Buttons #{0}] First button value: {1}", moduleId, values[0]);
-		Debug.LogFormat("[Morse Buttons #{0}] Second button value: {1}", moduleId, values[1]);
-		Debug.LogFormat("[Morse Buttons #{0}] Third button value: {1}", moduleId, values[2]);
-		Debug.LogFormat("[Morse Buttons #{0}] Fourth button value: {1}", moduleId, values[3]);
-		Debug.LogFormat("[Morse Buttons #{0}] Fifth button value: {1}", moduleId, values[4]);
-		Debug.LogFormat("[Morse Buttons #{0}] Sixth button value: {1}", moduleId, values[5]);
+		for (int x=0;x<6;x++)
+			Debug.LogFormat("[Morse Buttons #{0}] {2} button rule required: {1}", moduleId, values[x],positionLists[x]);
 	}
 
 	int GetCharValue(char c)
@@ -251,7 +256,7 @@ public class morseButtonsScript : MonoBehaviour
 			case 27:
 				return button <= 2;
 			case 28:
-				return Array.Exists(bomb.GetSerialNumber().ToArray(), x => x == alphabet[letters[button]]);
+				return bomb.GetSerialNumber().Contains(alphabet[letters[button]]);
 			case 29:
 				return bomb.IsPortPresent(Port.RJ45);
 			case 30:
@@ -319,36 +324,32 @@ public class morseButtonsScript : MonoBehaviour
 		}
 	}
 
-	String GetButtonPresses()
+	string GetButtonPresses()
 	{
-		String res = "";
+		string res = "";
 
 		for(int i = 0; i < 6; i++)
 		{
 			if(presses.Contains(i))
 			{
-				res += ((i + 1) + " ");
+				res += (res.Length != 0 ? ", " : "") + positionLists[i];
 			}
 		}
 
-		return res;
+		return res + " ";
 	}
 
 	void StartFlashes()
 	{
-		StartCoroutine(FlashLight(0));
-		StartCoroutine(FlashLight(1));
-		StartCoroutine(FlashLight(2));
-		StartCoroutine(FlashLight(3));
-		StartCoroutine(FlashLight(4));
-		StartCoroutine(FlashLight(5));
+		for (int x=0;x<6;x++)
+			StartCoroutine(FlashLight(x));
 	}
 
 	IEnumerator FlashLight(int n)
 	{
-		String character = morseTable[letters[n]];
+		string character = morseTable[letters[n]];
 
-		while(true)
+		while(!moduleSolved)
 		{
 			for(int i = 0; i < character.Length; i++)
 			{
@@ -365,7 +366,7 @@ public class morseButtonsScript : MonoBehaviour
 		}
 	}
 
-	String GetColorName(int color)
+	string GetColorName(int color)
 	{
 		switch(color)
 		{
@@ -386,49 +387,70 @@ public class morseButtonsScript : MonoBehaviour
 		return "";
 	}
 	
-	//twitch plays
-    #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"!{0} <button> [Presses the specified button] | !{0} <button>,<button> [Presses the specified buttons] | Valid buttons are: TL, TM, TR, BL, BM, and BR";
-    #pragma warning restore 414
+	//Handle Twitch Plays
+#pragma warning disable 414
+    private readonly string TwitchHelpMessage = "To press a button: \"!{0} press tl top-left BR\" \"press\" is optional. Valid buttons are TL, TM, TR, BL, BM, and BR and numbered 1-6 in reading order. To enable colorblind mode: \"!{0} colorblind\" or \"!{0} colourblind\"";
+#pragma warning restore 414
+	IEnumerator TwitchHandleForcedSolve()
+	{
+		while (presses.Count > 0)
+		{
+			buttons[presses.ElementAt(0)].OnInteract();
+			yield return new WaitForSeconds(0.1f);
+		}
+		yield return true;
+	}
 
     IEnumerator ProcessTwitchCommand(string command)
     {
-        string[] parameters = command.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+		string intereptedCommand = command.ToLower();
+		if (intereptedCommand.RegexMatch(@"^colou?rblind$"))
+		{
+			yield return null;
+			colorBlindDetected = true;
+			yield break;
+		}
+		intereptedCommand = command.ToLower().StartsWith("press ") ? command.Substring(6).ToLower() : command.ToLower();
+        string[] parameters = intereptedCommand.Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
         var buttonsToPress = new List<KMSelectable>();
         foreach (string param in parameters)
         {
-            if (param.EqualsIgnoreCase("press"))
-            {
-                // allow that but don't do anything
-            }
-            if (param.EqualsIgnoreCase("TL"))
-            {
-                buttonsToPress.Add(buttons[0]);
-            }
-            else if (param.EqualsIgnoreCase("TM"))
-            {
-                buttonsToPress.Add(buttons[1]);
-            }
-            else if (param.EqualsIgnoreCase("TR"))
-            {
-                buttonsToPress.Add(buttons[2]);
-            }
-            else if (param.EqualsIgnoreCase("BL"))
-            {
-                buttonsToPress.Add(buttons[3]);
-            }
-            else if (param.EqualsIgnoreCase("BM"))
-            {
-                buttonsToPress.Add(buttons[4]);
-            }
-            else if (param.EqualsIgnoreCase("BR"))
-            {
-                buttonsToPress.Add(buttons[5]);
-            }
-            else
-            {
-                yield break;
-            }
+			switch (param.Replace("center","middle").Replace("centre", "middle"))
+			{
+				case "tl":
+				case "top-left":
+				case "1":
+					buttonsToPress.Add(buttons[0]);
+					break;
+				case "tm":
+				case "top-middle":
+				case "2":
+					buttonsToPress.Add(buttons[1]);
+					break;
+				case "tr":
+				case "top-right":
+				case "3":
+					buttonsToPress.Add(buttons[2]);
+					break;
+				case "bl":
+				case "bottom-left":
+				case "4":
+					buttonsToPress.Add(buttons[3]);
+					break;
+				case "bm":
+				case "bottom-middle":
+				case "5":
+					buttonsToPress.Add(buttons[4]);
+					break;
+				case "br":
+				case "bottom-right":
+				case "6":
+					buttonsToPress.Add(buttons[5]);
+					break;
+				default:
+					yield return "sendtochaterror I'm sorry but what button is \"" + param + "\" supposed to be?";
+					yield break;
+			}
         }
 
         yield return null;
