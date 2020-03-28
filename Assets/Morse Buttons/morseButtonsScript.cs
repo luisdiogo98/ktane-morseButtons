@@ -419,31 +419,37 @@ public class morseButtonsScript : MonoBehaviour
 			{
 				case "tl":
 				case "top-left":
+				case "topleft":
 				case "1":
 					buttonsToPress.Add(buttons[0]);
 					break;
 				case "tm":
 				case "top-middle":
+				case "topmiddle":
 				case "2":
 					buttonsToPress.Add(buttons[1]);
 					break;
 				case "tr":
 				case "top-right":
+				case "topright":
 				case "3":
 					buttonsToPress.Add(buttons[2]);
 					break;
 				case "bl":
 				case "bottom-left":
+				case "bottomleft":
 				case "4":
 					buttonsToPress.Add(buttons[3]);
 					break;
 				case "bm":
 				case "bottom-middle":
+				case "bottommiddle":
 				case "5":
 					buttonsToPress.Add(buttons[4]);
 					break;
 				case "br":
 				case "bottom-right":
+				case "bottomright":
 				case "6":
 					buttonsToPress.Add(buttons[5]);
 					break;
