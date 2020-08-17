@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Name: ModConfig
   m_EditorClassIdentifier: 
   id: morseButtons
-  title: Morse Buttons
-  description: "Oh, yes... More buttons and blinking lights... How original...\r\n\r\nModule
-    by TheThirdMan\r\nmoduleID: morseButtons\r\n\r\nManual HTML: https://ktane.timwi.de/HTML/Morse%20Buttons.html\r\nManual
-    PDF: https://ktane.timwi.de/PDF/Morse%20Buttons.pdf\r\n\r\nGitHub Repository:
-    https://github.com/luisdiogo98/ktane-morseButtons\r\n\r\nAny problems/suggestions,
-    feel free to contact me on the KTaNE Discord @TheThirdMan. Join the KTaNE Discord
-    here: https://discord.gg/Fv7YEDj"
+  title: Morse Buttons (Reupload)
+  description: "Oh, yes... More buttons and blinking lights... How original...\r\n\r\n[b]This
+    is a reupload of the original module with permission from the original creator.
+    Please unsubscribe/disable the original version here: https://steamcommunity.com/sharedfiles/filedetails/?id=1736614714[/b]\n\nOriginal
+    Module by TheThirdMan\r\nReuploaded and currently maintained by VFlyer\nmoduleID:
+    morseButtons\r\n\r\nManual HTML: https://ktane.timwi.de/HTML/Morse%20Buttons.html\r\nManual
+    PDF: https://ktane.timwi.de/PDF/Morse%20Buttons.pdf\r\n\r\nGitHub (Reuploaded
+    Version): https://github.com/VFlyer/ktane-morseButtons\nGitHub (Original): https://github.com/luisdiogo98/ktane-morseButtons\n\r\nKTaNE
+    Discord: https://discord.gg/Fv7YEDj"
   version: 1.6
   outputFolder: build
   previewImage: {fileID: 2800000, guid: 5e991c422eb5e424ab60b6f673850cd3, type: 3}
